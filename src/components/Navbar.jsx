@@ -290,8 +290,8 @@ const NavBar = ({ toggleDarkMode }) => {
             onClose={handleMenuClose}
           >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Languages</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
+            {/* <MenuItem onClick={handleMenuClose}>Languages</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Settings</MenuItem> */}
             <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             <MenuItem onClick={toggleDarkMode}>Night Mode</MenuItem>
           </Menu>

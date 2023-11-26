@@ -36,12 +36,12 @@ const SideNavbar = ({ open, onClose, toggleDarkMode }) => {
           <ListItem button onClick={() => handleNavigation("/favourite")}>
             <ListItemText primary="My Music" />
           </ListItem>
-          <ListItem button onClick={() => handleNavigation("/musiclist")}>
+          {/* <ListItem button onClick={() => handleNavigation("/musiclist")}>
             <ListItemText primary="India's Music" />
           </ListItem>
           <ListItem button onClick={() => handleNavigation("/musiclist")}>
             <ListItemText primary="Language" />
-          </ListItem>
+          </ListItem> */}
           <ListItem>
             <ListItemText primary="Night Mode" />
             <Switch onChange={toggleDarkMode} color="primary" />
