@@ -16,19 +16,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite, setIsPlaying } from "../Redux/actions";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 
 const AudioPlayer = () => {
   const song = useSelector((state) => state.songReducer);
   const dispatch = useDispatch();
-  const favouriteSongs = useSelector((state) => state.favouriteSongs);
+  //const favouriteSongs = useSelector((state) => state.favouriteSongs);
+  const [favouriteSongs,setFavouriteSongs] = useState([{}]);
+  useEffect(()=>{
+const localData = JSON.parse(localStorage.getItem("songList")) || [];
+console.log('line-12',localData);
+setFavouriteSongs(localData);
+
+  },[]);
   const isPlaying = useSelector((state) => state.audio.isPlaying);
 
-  console.log("favourite Songs", favouriteSongs);
+  console.log("favourite Songs-27", favouriteSongs);
 
   const isSongInFavorites = (song, favouriteSongs) => {
     // Use the favoriteSongs array from your Redux state to check if the song is in favorites
-    return favouriteSongs.some((favoriteSong) => favoriteSong._id === song._id);
+    return favouriteSongs?.some((favoriteSong) => favoriteSong._id === song._id);
   };
   // const [song, setSong] = useState(songfromRedux);
   // setSong(songfromRedux);
@@ -48,7 +55,6 @@ const AudioPlayer = () => {
   const updateIsMobile = () => {
     setIsMobile(window.innerWidth <= 768);
   };
-
   useEffect(() => {
     // Add a listener for window resize events
     window.addEventListener("resize", updateIsMobile);
@@ -105,15 +111,27 @@ const AudioPlayer = () => {
     theme.palette.mode === "dark" ? "#1e1e1e" : "#fff";
 
   const isLoggedIn = JSON.parse(localStorage.getItem("user"));
+  const getSongList = JSON.parse(localStorage.getItem("songList")) || [];
+  console.log("line 108",getSongList);
+  console.log("isLogin",isLoggedIn);
 
-  const handleFav = () => {
+  const handleFav = (song) => {
     if (isLoggedIn) {
       if (isSongInFavorites(song, favouriteSongs)) {
-        dispatch(removeFavorite(song));
-        console.log("song removed from favorite");
-      } else {
-        dispatch(addFavorite(song));
+        //dispatch(removeFavorite(song));
+        const removeItemId = song._id
+        const needToRemoveIndex = favouriteSongs.findIndex(item=>item._id=== removeItemId);
+        if(needToRemoveIndex !== -1){
+          favouriteSongs.splice(needToRemoveIndex,1);
+          localStorage.setItem("songList",JSON.stringify([...favouriteSongs]));
+          // localStorage.removeItem("songList");
+          window.location.reload();
+        }
+        } else {
+       // dispatch(addFavorite(song));
+        localStorage.setItem("songList",JSON.stringify([...favouriteSongs,song]));
         console.log("song added to favorite");
+        window.location.reload();
       }
     } else {
       toast.error("You are not logged in.");
@@ -197,7 +215,7 @@ const AudioPlayer = () => {
             <Typography variant="subtitle1">{song?.title}</Typography>
           </div>
           <div style={{ marginLeft: "auto" }}>
-            <IconButton onClick={handleFav}>
+            <IconButton onClick={()=>handleFav(song)}>
               {isSongInFavorites(song, favouriteSongs) ? (
                 <FavoriteIcon style={{ color: "#E72C30" }} />
               ) : (

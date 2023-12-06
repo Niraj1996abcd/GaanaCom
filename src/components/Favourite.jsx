@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import MusicCard from "./MusicCard";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Favourite = () => {
-  const FavouriteSongs = useSelector((state) => state.favouriteSongs);
-  const isLoggedIn = JSON.parse(localStorage.getItem("user"));
+ // const FavouriteSongs = useSelector((state) => state.favouriteSongs);
+  const [FavouriteSongs,setFavouriteSongs] = useState([]);
+  useEffect(()=>{
+const localData = JSON.parse(localStorage.getItem("songList"));
+console.log('line-12',localData);
+setFavouriteSongs(localData);
+
+  },[]);
+ const isLoggedIn = JSON.parse(localStorage.getItem("user"));
   return (
     <>
       {isLoggedIn ? (
