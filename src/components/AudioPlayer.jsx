@@ -122,7 +122,7 @@ setFavouriteSongs(localData);
         const removeItemId = song._id
         const needToRemoveIndex = favouriteSongs.findIndex(item=>item._id=== removeItemId);
         if(needToRemoveIndex !== -1){
-          favouriteSongs.splice(needToRemoveIndex,1);
+          favouriteSongs.splice(needToRemoveIndex,favouriteSongs.length);
           localStorage.setItem("songList",JSON.stringify([...favouriteSongs]));
           // localStorage.removeItem("songList");
           window.location.reload();
