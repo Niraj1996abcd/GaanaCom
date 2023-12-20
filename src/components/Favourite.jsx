@@ -13,13 +13,17 @@ console.log('line-12',localData);
 setFavouriteSongs(localData);
 
   },[]);
+  function removeSong(){
+   let item =  localStorage.removeItem("songList");
+   setFavouriteSongs(item);
+  }
  const isLoggedIn = JSON.parse(localStorage.getItem("user"));
   return (
     <>
       {isLoggedIn ? (
         <>
           <h1 style={{ textAlign: "center" }}>Favourite Songs</h1>
-          {FavouriteSongs.length > 0 ? (
+          {FavouriteSongs?.length > 0 ? (
             <MusicCard data={FavouriteSongs} />
           ) : (
             <div style={{ textAlign: "center" }}>List is Empty</div>
@@ -31,6 +35,7 @@ setFavouriteSongs(localData);
           {(window.location.href = "/")}
         </>
       )}
+      <button onClick={removeSong}>Remove Items</button>
     </>
   );
 };
